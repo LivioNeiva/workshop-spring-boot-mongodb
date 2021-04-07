@@ -2,6 +2,7 @@ package com.livioneiva.workshopmongo.resources;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.livioneiva.workshopmongo.domain.User;
+import com.livioneiva.workshopmongo.dto.UserDTO;
 import com.livioneiva.workshopmongo.services.UserService;
 
 @RestController
@@ -26,13 +28,15 @@ public class UserResource {
 
 	//@GetMapping // ou posso usar a opção abaixo
 	@RequestMapping(method = RequestMethod.GET)//para dizer esse metodo vai ser um edpoint rest no caminho /users
-	public ResponseEntity<List<User>> findAll(){
+	public ResponseEntity<List<UserDTO>> findAll(){
 		
 		//List<User> list = service.findAll(); // ou exemplo abaixo 
 		List<User> list = new ArrayList<User>();
 		list.addAll(service.findAll());
-		return ResponseEntity.ok().body(list);
+		//estou adicionando as informações do obj list do tipo User para obj UserDTO usando map
+		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		
+		return ResponseEntity.ok().body(listDto);
 	}
 }
 /*

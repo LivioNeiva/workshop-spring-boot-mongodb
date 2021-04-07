@@ -12,14 +12,14 @@ import com.livioneiva.workshopmongo.repository.UserRepository;
 public class UserService {
 
 	/*
-	auto dependencia com a classe UserRepository
-	quando instanciamos uma auto dependencia, como @AutoWired o proprio Spring vai
-	procurar uma definiçao para o objeto e vai instanciar o objeto
+	 * auto dependencia com a classe UserRepository quando instanciamos uma auto
+	 * dependencia, como @AutoWired o proprio Spring vai procurar uma definiçao para
+	 * o objeto e vai instanciar o objeto
 	 */
-	@Autowired //é o mecanismo de ingeção de dependencia automatica do spring boot
+	@Autowired // é o mecanismo de ingeção de dependencia automatica do spring boot
 	UserRepository repository;
-	
-	public List<User> findAll(){
+
+	public List<User> findAll() {
 		return repository.findAll();
 	}
 }
