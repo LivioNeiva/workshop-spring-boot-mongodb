@@ -28,7 +28,7 @@ public class UserResource {
 	@RequestMapping(method = RequestMethod.GET)//para dizer esse metodo vai ser um edpoint rest no caminho /users
 	public ResponseEntity<List<User>> findAll(){
 		
-		//List<User> list = service.findAll(); // ou ex abaixo 
+		//List<User> list = service.findAll(); // ou exemplo abaixo 
 		List<User> list = new ArrayList<User>();
 		list.addAll(service.findAll());
 		return ResponseEntity.ok().body(list);

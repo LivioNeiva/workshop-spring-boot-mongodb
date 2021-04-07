@@ -6,10 +6,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /*
-para informarmos q essa classe User corresponde a uma collections no dba mongoDB
-collection="user" = se nao colocarmos, automaticamente o spring data vai mapear a 
-collection com o mesmo nome da classe so q em letra minuscula, se colocarmos so 
-@Document, tambem funciona.
+@Document = para informarmos q essa classe User corresponde a uma collections no dba mongoDB
+collection="user" = se nao colocarmos, automaticamente o spring vai mapear a 
+collection com o mesmo nome da classe so q em letra minuscula, para q isso aconteça 
+ basta so por @Document.
  */
 @Document(collection="user") 
 public class User implements Serializable {
