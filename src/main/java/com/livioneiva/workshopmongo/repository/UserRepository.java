@@ -11,3 +11,8 @@ public interface UserRepository extends MongoRepository<User, String> {
 
 	
 }
+/*
+Livio cara, o MongoRepository já responde o próprio nome, é feito para MongoDB, um banco não 
+relacional. Repository, CrudRepository, JpaRepository são é uma abstração para uso em bancos
+ relacionais conhecidos, como Oracle, MySql, SQL Server, DB2, H2, etc.
+*/

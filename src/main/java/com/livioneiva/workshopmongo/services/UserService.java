@@ -48,10 +48,14 @@ public class UserService {
 	}
 	
 	public User fromUserDTO(UserDTO userDto) {
-		
 		return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
-		
 	}
+	
+	public void delete(String id) {
+		findById(id);
+		repository.deleteById(id);
+	}
+	
 }
 
 /*
