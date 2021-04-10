@@ -1,5 +1,6 @@
 package com.livioneiva.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.livioneiva.workshopmongo.domain.User;
 import com.livioneiva.workshopmongo.dto.UserDTO;
@@ -48,6 +52,23 @@ public class UserResource {
 	public ResponseEntity<UserDTO> findById(@PathVariable String id){//@PathVariable = atraves dessa anotations q recebemos o id do @GetMapping
 		User obj = service.findById(id);
 		return ResponseEntity.ok().body(new UserDTO(obj));
+	}
+	
+	//@PostMapping //ou annotation a baixo
+	@RequestMapping(method = RequestMethod.POST) //a requisição vinda URL é uma inserção de dados
+	ResponseEntity<Void> insert(@RequestBody UserDTO userDto){ //o Void retorna um obj vazio
+		User obj = service.fromUserDTO(userDto);//inserindo as informações da reguisição no obj user
+		obj = service.insert(obj); //insersão na base de dados, convertendo o DTO para user
+		//vamos colocar no cabecalho da requisiçao a url com novo recurso criado, o codigo a baixo é especifico do spring, faz exaamente isso
+		//o o codigo está abaixo vai pegar o novo endereco foi inserido
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();//created retorna codigo 201 CODIGO DE STATUS é de criação
+		/*
+		 created(uri) = codigo de status http quando criamos um novo recurso, no arugumento created inseerimos o caminho é a uri
+		 ResponseEntity.created(uri).build() = retorna uma resposta vazia(Void) com codigo 201
+		 e com o cabecalho contendo a a localização(uri) com novo recurso criado
+		 */
+		
 	}
 }
 /*

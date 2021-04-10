@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.livioneiva.workshopmongo.domain.User;
+import com.livioneiva.workshopmongo.dto.UserDTO;
 import com.livioneiva.workshopmongo.repository.UserRepository;
 import com.livioneiva.workshopmongo.services.exceptions.ObjectNotFoundException;
 
@@ -32,11 +33,29 @@ public class UserService {
 		Optional<User> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 		
-		
 		/*
 		 findOne = vc passa id como argumento, ele retorna o obj, esse metodo aparti de 
 		 versão 2 do string foi substituido  pelo findById()
 		 User user = repository.findOne(id); 
 		 */
 	}
+	/*
+	obs. como o repository retorna um objeto, temos manter o padrao de nao usar void
+	e sim o tipo do metodo, nesse caso o tipo é use.
+	 */
+	public User insert(User user) {
+		return repository.insert(user);
+	}
+	
+	public User fromUserDTO(UserDTO userDto) {
+		
+		return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+		
+	}
 }
+
+/*
+o que é o metodo fromDTO, é um metodo que vai pegar um TDO, e instanciar um usuario
+
+
+*/
