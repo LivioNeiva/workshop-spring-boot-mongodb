@@ -47,15 +47,30 @@ public class UserService {
 		return repository.insert(user);
 	}
 	
-	public User fromUserDTO(UserDTO userDto) {
-		return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
-	}
-	
 	public void delete(String id) {
 		findById(id);
 		repository.deleteById(id);
 	}
 	
+	/*
+	esse obj tipo user é os dados q vai vim na requisição, esses dados nao tem vinculum com dba
+	temos q buscar o obj origina q esta no banco de dados, alterar o obj do banco de dados
+	com obj user q vem da requisição e salvar o obj com as novas alterações
+	 */
+	public User update(User obj) {
+		User newObj = findById(obj.getId());//estamos buscando o no banco de dados, vobj.getId() = esse é o id q pertence ao obj q veio na requisição
+		updateData(newObj,obj);//esse metodo é responsavel para copiar os dados da requisição(obj), para o novo obj(newObj)
+		return repository.save(newObj);//salva as alterações no dba
+	}
+	
+	public void updateData(User newObj, User user) {
+		newObj.setName(user.getName());
+		newObj.setEmail(user.getEmail());
+	}
+	
+	public User fromUserDTO(UserDTO userDto) {
+		return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
+	}
 }
 
 /*

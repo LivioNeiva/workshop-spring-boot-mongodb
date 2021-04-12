@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,7 @@ public class UserResource {
 	@Autowired // é o mecanismo de ingeção de dependencia automatica do spring boot
 	private UserService service;
 
+	// operação basica do CRUD - Consulta
 	// @GetMapping // ou posso usar a opção abaixo
 	@RequestMapping(method = RequestMethod.GET) // para dizer esse metodo vai ser um edpoint rest no caminho /users
 	public ResponseEntity<List<UserDTO>> findAll() {
@@ -48,6 +50,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	//CRiação basica CRUD - Consulta por ID
 	//@GetMapping(value = "/{id}")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDTO> findById(@PathVariable String id){//@PathVariable = atraves dessa anotations q recebemos o id do @GetMapping
@@ -55,6 +58,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 	
+	//Criação basica CRUD - Insersão
 	//@PostMapping //ou annotation a baixo
 	@RequestMapping(method = RequestMethod.POST) //a requisição vinda URL é uma inserção de dados
 	ResponseEntity<Void> insert(@RequestBody UserDTO userDto){ //o Void retorna um obj vazio
@@ -72,12 +76,23 @@ public class UserResource {
 		
 	}
 	
+	//Criaçao basica CRUD - deleção
 	//@DeleteMapping
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable String id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	//@PutMapping(value = "/{id}")//na requisição tem vim o id como o corpo da requisição
+	@RequestMapping(value = "/{id}",  method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody UserDTO userDto, @PathVariable String id){
+		User obj = service.fromUserDTO(userDto);//instanciando o obj com dados q vem da requisição
+		obj.setId(id);//o obj vai receber o id do obj da requisição, garante q o obj vai ter o id da requisição
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
 }
 
 
